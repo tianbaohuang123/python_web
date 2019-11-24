@@ -11,24 +11,14 @@ def create_num(all_num):
 def main():
     # 如果在调用create_num的时候，发现这个函数中有yield 那么此时，不是调用函数，而是创建一个生成器对象
     obj = create_num(10)
-    obj2 = create_num(2)
-    ret = next(obj)
-    print("obj:", ret)
 
-    ret = next(obj)
-    print("obj:", ret)
-
-    ret = next(obj)
-    print("obj:", ret)
-
-    ret = next(obj2)
-    print("obj2:", ret)
-
-    ret = next(obj2)
-    print("obj2:", ret)
-
-    for num in obj:
-        print(num)
+    while True:
+        try:
+            ret = next(obj)
+            print(ret)
+        except Exception as ret:
+            print(ret.value)
+            break
 
 if __name__ == '__main__':
     main()

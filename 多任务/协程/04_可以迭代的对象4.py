@@ -23,9 +23,12 @@ class ClassIterator(object):
         pass
 
     def __next__(self):
-        ret = self.obj.names[self.current_num]
-        self.current_num += 1
-        return ret
+        if self.current_num < len(self.obj.names):
+            ret = self.obj.names[self.current_num]
+            self.current_num += 1
+            return ret
+        else:
+            raise StopIteration
 
 def main():
     classmate = Classmate()

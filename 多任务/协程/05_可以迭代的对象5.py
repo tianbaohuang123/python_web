@@ -5,26 +5,18 @@ from collections.abc import Iterator
 class Classmate(object):
     def __init__(self):
         self.names = list()
+        self.current_num = 0
 
     def add(self, name):
         self.names.append(name)
 
     def __iter__(self):
         """如果想要一个对象称为一个 可以迭代的对象，即可以使用for，那么必须实现__iter__方法"""
-        return ClassIterator(self)
-
-class ClassIterator(object):
-
-    def __init__(self, obj):
-        self.obj = obj
-        self.current_num = 0
-
-    def __iter__(self):
-        pass
+        return self # 调用iter(xxobj)的时候 只要 __iter__方法返回一个 迭代器即可，至于是自己还是别的对象都可以，但是要保证是一个迭代器（即实现了 __iter__ __next__方法）
 
     def __next__(self):
-        if self.current_num < len(self.obj.names):
-            ret = self.obj.names[self.current_num]
+        if self.current_num < len(self.names):
+            ret = self.names[self.current_num]
             self.current_num += 1
             return ret
         else:
@@ -35,12 +27,6 @@ def main():
     classmate.add("laowang")
     classmate.add("wanger")
     classmate.add("zhangsan")
-
-    # print("判断classmate是否是可以迭代的对象：", isinstance(classmate, Iterable))
-    #
-    # classmate_iterator = iter(classmate)
-    # print("判断classmate_iterator是否是可以迭代的对象：", isinstance(classmate_iterator, Iterable))
-    # print(next(classmate_iterator))
 
     for name in classmate:
         print(name)

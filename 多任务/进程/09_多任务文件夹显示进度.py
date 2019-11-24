@@ -1,9 +1,12 @@
 import os
 import multiprocessing
 
+# 创建一个队列
+q = multiprocessing.Manager().Queue()
+
 def copy_file(file_name, old_folder_name, new_folder_name):
     """完成文件的复制"""
-    print("---模拟复制文件：从%s到%s 文件名是%s" % (old_folder_name, new_folder_name, file_name))
+    # print("---模拟复制文件：从%s到%s 文件名是%s" % (old_folder_name, new_folder_name, file_name))
     old_f = open(old_folder_name + "/" + file_name, "rb")
     content = old_f.read()
     old_f.close()
@@ -11,6 +14,8 @@ def copy_file(file_name, old_folder_name, new_folder_name):
     new_f = open(new_folder_name + "/" + file_name, "wb")
     new_f.write(content)
     new_f.close()
+
+    q.put(file_name)
 
 def main():
     # 1.获取用户要copy的文件夹的名字
@@ -25,7 +30,7 @@ def main():
 
     # 3.获取文件夹中所有的待copy的文件名字 listdir()
     file_names = os.listdir(old_folder_name)
-    print(file_names)
+    # print(file_names)
 
     # 4.创建线程池
     po = multiprocessing.Pool(5)
@@ -35,7 +40,18 @@ def main():
         po.apply_async(copy_file, (file_name, old_folder_name, new_folder_name))
 
     po.close()
-    po.join()
+    # po.join()
+
+    all_file_num  = len(file_names) # 测一下所有的文件个数
+    copy_ok_num = 0
+    while True:
+        file_name = q.get()
+        copy_ok_num += 1
+        print("\t拷贝的进度为：%.2f %%" % (copy_ok_num * 100 / all_file_num), end="")
+        if copy_ok_num >= all_file_num:
+            break
+
+    print()
 
 if __name__ == '__main__':
     main()

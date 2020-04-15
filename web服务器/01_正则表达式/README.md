@@ -2,6 +2,7 @@
 正则表达式
 
 > import re
+
 > re.match(正则表达式, 需要处理的字符串)
 
 # 匹配单个字符：
@@ -35,25 +36,30 @@
 # re模块的高级用法：
 
 * (1)需求：匹配出文章阅读的次数
-'''
+
+```python
 ret = re.search(r"\d+", "阅读次数为 9999")
 re.group()
-'''
+```
 
 * (2)需求：统计出python、c、c++相应文章阅读的次数
-'''
+
+```python
 ret = re.findall(r"\d+", "python = 9999, c = 7890, c++ = 12345")
 print(ret) #直接返回数据不需要group
-'''
+```
 
 * (3)sub将匹配到的数据进行替换
 * * 需求：将匹配到的阅读次数加1
-'''
+
+```python
 ret = re.sub(r"\d+", '998', "python = 997")
 print(ret)
-'''
-* 可传入函数
-'''
+```
+
+* (4)可传入函数
+
+```python
 def add(temp):
     strNum = temp.group()
     num = int(strNum) + 1
@@ -61,12 +67,13 @@ def add(temp):
 
 ret = re.sub(r"\d+", add, "python = 99"
 print(ret)
-'''
+```
 
-# split根据匹配进行切割字符串，并返回一个列表
+* (5)split根据匹配进行切割字符串，并返回一个列表
 * * 需求：切割字符串"info:xiaoZhang 18 hangzhou"
-'''
+
+```python
 ret = re.split(r":| ", "info:xiaoZhang 18 hangzhou")
 print(ret)
-'''
+```
 
